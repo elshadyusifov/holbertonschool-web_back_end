@@ -53,12 +53,19 @@ class Server:
         data = []
         current_index = index
 
-        while len(data) < page_size and current_index < max(dataset.keys()) + 1:
+        while (
+            len(data) < page_size
+            and current_index < max(dataset.keys()) + 1
+            ):
             if current_index in dataset:
                 data.append(dataset[current_index])
             current_index += 1
 
-        next_index = current_index if current_index <= max(dataset.keys()) else None
+        next_index = (
+            current_index
+            if current_index <= max(dataset.keys())
+            else None
+        )
 
         return {
             "index": index,
