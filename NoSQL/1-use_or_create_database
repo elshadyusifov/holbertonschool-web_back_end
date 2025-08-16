@@ -1,0 +1,2 @@
+// my comment: This script creates or switches to a database in MongoDB
+use my_db
