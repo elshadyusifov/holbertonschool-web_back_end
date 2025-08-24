@@ -29,7 +29,7 @@ export default class Car {
     this._color = newColor;
   }
 
-  cloneCar () {
+  cloneCar (car) {
   return new Car(car.brand, car.motor, car.color);
   }
 }
