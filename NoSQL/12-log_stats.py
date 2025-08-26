@@ -3,7 +3,7 @@
 Provides some stats about Nginx logs stored in MongoDB.
 """
 
-from pymongo import MongoClient
+from pymongo import MongoClient # type: ignore
 
 if __name__ == "__main__":
     client = MongoClient()
