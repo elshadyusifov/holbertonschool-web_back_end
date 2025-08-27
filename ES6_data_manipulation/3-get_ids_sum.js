@@ -1,3 +1,6 @@
-export default function getIdsSum(data) {
-  return data.reduce((acc, curr) => acc + curr.id, 0);
+export default function getStudentsIdsSum(students) {
+  if (!Array.isArray(students)) {
+    return [];
+  }
+  return students.reduce((sum, student) => sum + student.id, 0);
 }
