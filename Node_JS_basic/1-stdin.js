@@ -1,18 +1,12 @@
-process.stdout.write('Welcome to Holberton School, what is your name?\n');
+const readline = require('readline');
 
-process.stdin.setEncoding('utf8');
-
-let input = '';
-
-process.stdin.on('data', (chunk) => {
-  input += chunk;
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
 });
 
-process.stdin.on('end', () => {
-  const name = input.trim();
-  if (name) {
-    // ⚠️ Holberton checker expects '\r' before '\n'
-    process.stdout.write(`Your name is: ${name}\r\n`);
-  }
-  process.stdout.write('This important software is now closing\n');
+rl.question('Welcome to Holberton School, what is your name?\n', (name) => {
+  rl.write(`Your name is: ${name}\r\n`);
+  console.log('This important software is now closing');
+  rl.close();
 });
