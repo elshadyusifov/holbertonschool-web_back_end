@@ -6,7 +6,7 @@ const rl = readline.createInterface({
 });
 
 rl.question('Welcome to Holberton School, what is your name?\n', (name) => {
-  // Only print the name line for the test
-  process.stdout.write(`Your name is: ${name}\r`);
+  process.stdout.write(`Your name is: ${name}\r\n`); // \r\n to match both CR+LF and move to next line
+  console.log('This important software is now closing'); // closing message
   rl.close();
 });
