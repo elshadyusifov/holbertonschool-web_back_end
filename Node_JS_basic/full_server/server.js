@@ -2,11 +2,12 @@ import express from 'express';
 import router from './routes/index.js';
 
 const app = express();
-app.use(router);
+const PORT = 1245;
 
-const port = 1245;
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+app.use('/', router);
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
 
 export default app;
