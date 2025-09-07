@@ -6,8 +6,10 @@ export default class StudentsController {
     try {
       const students = await readDatabase(dbPath);
       let output = 'This is the list of our students\n';
-      const fields = Object.keys(students).sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
-      fields.forEach((field) => {
+      const fields = Object.keys(students).sort((a, b) =>
+        a.localeCompare(b, 'en', { sensitivity: 'base' })
+      );
+      fields.forEach(field => {
         output += `Number of students in ${field}: ${students[field].length}. List: ${students[field].join(', ')}\n`;
       });
       return res.status(200).send(output.trim());
