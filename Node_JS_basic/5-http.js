@@ -17,7 +17,7 @@ const app = http.createServer((req, res) => {
         res.end(`This is the list of our students\n${output}`);
       })
       .catch(() => {
-        res.end('Cannot load the database');
+        res.end('This is the list of our students\nCannot load the database');
       });
   } else {
     res.writeHead(404, { 'Content-Type': 'text/plain' });
