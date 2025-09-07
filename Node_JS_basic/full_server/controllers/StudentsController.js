@@ -1,48 +1,38 @@
 import { readDatabase } from '../utils.js';
 
-class StudentsController {
-  /**
-   * GET /students
-   */
+export default class StudentsController {
   static async getAllStudents(req, res) {
     const dbFile = process.argv[2];
-
     try {
       const data = await readDatabase(dbFile);
+      let output = 'This is the list of our students\n';
       const fields = Object.keys(data).sort((a, b) =>
         a.toLowerCase().localeCompare(b.toLowerCase())
       );
-
-      let responseText = 'This is the list of our students\n';
       fields.forEach((field) => {
-      const names = data[field].map((name) => name.trim()); // trim hər adı
-      responseText += `Number of students in ${field}: ${names.length}. List: ${names.join(', ')}\n`;
+        const names = data[field];
+        output += `Number of students in ${field}: ${names.length}. List: ${names.join(', ')}\n`;
       });
-      res.status(200).send(responseText.replace(/\r/g, '').trim());
+      res.status(200).send(output.trim());
     } catch (err) {
       res.status(500).send('Cannot load the database');
     }
   }
 
-  /**
-   * GET /students/:major
-   */
   static async getAllStudentsByMajor(req, res) {
     const dbFile = process.argv[2];
-    const { major } = req.params;
-
+    const major = req.params.major;
     if (major !== 'CS' && major !== 'SWE') {
-      return res.status(500).send('Major parameter must be CS or SWE');
+      res.status(500).send('Major parameter must be CS or SWE');
+      return;
     }
 
     try {
       const data = await readDatabase(dbFile);
-      if (!data[major]) data[major] = [];
-      res.status(200).send(`List: ${data[major].join(', ')}`);
+      const names = data[major] || [];
+      res.status(200).send(`List: ${names.join(', ')}`);
     } catch (err) {
       res.status(500).send('Cannot load the database');
     }
   }
 }
-
-export default StudentsController;

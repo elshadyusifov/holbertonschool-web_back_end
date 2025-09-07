@@ -1,12 +1,5 @@
-class AppController {
-  /**
-   * Homepage controller
-   * @param {Request} _req
-   * @param {Response} res
-   */
-  static getHomepage(_req, res) {
+export default class AppController {
+  static getHomepage(req, res) {
     res.status(200).send('Hello Holberton School!');
   }
 }
-
-export default AppController;
