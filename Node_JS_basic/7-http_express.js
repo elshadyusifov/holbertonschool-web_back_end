@@ -16,8 +16,9 @@ app.get('/students', (req, res) => {
       res.write(content);
       res.end();
     })
-    .catch((err) => {
-      res.write(`This is the list of our students\n${err.message}`);
+    .catch(() => {
+      // Error baş verəndə də tələb olunan formatda göndər
+      res.write('Cannot load the database');
       res.end();
     });
 });
