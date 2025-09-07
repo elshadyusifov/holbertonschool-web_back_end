@@ -1,23 +1,24 @@
 import fs from 'fs';
 
-export default function readDatabase(path) {
-  return new Promise((resolve, reject) => {
-    fs.readFile(path, 'utf-8', (err, data) => {
-      if (err) return reject(new Error('Cannot load the database'));
+export const readDatabase = (filePath) => new Promise((resolve, reject) => {
+  fs.readFile(filePath, 'utf-8', (err, data) => {
+    if (err) {
+      reject(new Error('Cannot load the database'));
+      return;
+    }
+    const lines = data.split('\n').filter((line) => line.trim() !== '');
+    const students = {};
+    const header = lines.shift().split(',');
+    const fieldsIndex = header.indexOf('field');
+    const firstnameIndex = header.indexOf('firstname');
 
-      const lines = data.split('\n').filter((line) => line.trim() !== '');
-      const result = {};
-
-      for (let i = 1; i < lines.length; i += 1) {
-        const parts = lines[i].split(',');
-        if (parts.length >= 4) {
-          const firstname = parts[0].trim();
-          const field = parts[3].trim();
-          if (!result[field]) result[field] = [];
-          result[field].push(firstname);
-        }
-      }
-      return resolve(result);
+    lines.forEach((line) => {
+      const row = line.split(',');
+      const field = row[fieldsIndex].trim();
+      const firstname = row[firstnameIndex].trim();
+      if (!students[field]) students[field] = [];
+      students[field].push(firstname);
     });
+    resolve(students);
   });
-}
+});
