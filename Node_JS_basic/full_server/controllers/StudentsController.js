@@ -15,9 +15,10 @@ class StudentsController {
 
       let responseText = 'This is the list of our students\n';
       fields.forEach((field) => {
-        responseText += `Number of students in ${field}: ${data[field].length}. List: ${data[field].join(', ')}\n`;
+      const names = data[field].map((name) => name.trim()); // trim hər adı
+      responseText += `Number of students in ${field}: ${names.length}. List: ${names.join(', ')}\n`;
       });
-      res.status(200).send(responseText.trim());
+      res.status(200).send(responseText.replace(/\r/g, '').trim());
     } catch (err) {
       res.status(500).send('Cannot load the database');
     }

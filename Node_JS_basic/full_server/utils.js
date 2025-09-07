@@ -27,7 +27,7 @@ export function readDatabase(path) {
         return;
       }
 
-      const [firstname, , field] = line.split(',');
+      const [firstname, , field] = line.split(',').map((item) => item.trim());
       if (!data[field]) data[field] = [];
       data[field].push(firstname);
     });
