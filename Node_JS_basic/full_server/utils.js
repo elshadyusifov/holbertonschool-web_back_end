@@ -1,13 +1,14 @@
 import fs from 'fs';
 
-export function readDatabase(path) {
+export default function readDatabase(path) {
   return new Promise((resolve, reject) => {
     fs.readFile(path, 'utf-8', (err, data) => {
       if (err) return reject(new Error('Cannot load the database'));
-      const lines = data.split('\n').filter(line => line.trim() !== '');
+
+      const lines = data.split('\n').filter((line) => line.trim() !== '');
       const result = {};
 
-      for (let i = 1; i < lines.length; i++) { // skip header
+      for (let i = 1; i < lines.length; i += 1) {
         const parts = lines[i].split(',');
         if (parts.length >= 4) {
           const firstname = parts[0].trim();
@@ -16,7 +17,7 @@ export function readDatabase(path) {
           result[field].push(firstname);
         }
       }
-      resolve(result);
+      return resolve(result);
     });
   });
 }
