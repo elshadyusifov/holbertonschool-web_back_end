@@ -2,37 +2,41 @@ const fs = require('fs');
 
 function countStudents(path) {
   return new Promise((resolve, reject) => {
-    fs.readFile(path, 'utf8', (err, data) => {
+    fs.readFile(path, 'utf-8', (err, data) => {
       if (err) {
         reject(new Error('Cannot load the database'));
         return;
       }
 
       const lines = data.trim().split('\n');
-      const students = lines.slice(1).filter((line) => line.trim() !== '');
+      lines.shift(); // başlığı at
 
-      console.log(`Number of students: ${students.length}`);
+      const students = {};
+      let total = 0;
 
-      const fields = {};
-
-      students.forEach((line) => {
+      for (const line of lines) {
+        if (line.trim() === '') continue;
         const parts = line.split(',');
         const firstname = parts[0];
         const field = parts[3];
 
-        if (!fields[field]) {
-          fields[field] = [];
+        if (field) {
+          if (!students[field]) students[field] = [];
+          students[field].push(firstname);
+          total += 1;
         }
-        fields[field].push(firstname);
-      });
-
-      for (const [field, list] of Object.entries(fields)) {
-        console.log(
-          `Number of students in ${field}: ${list.length}. List: ${list.join(', ')}`,
-        );
       }
 
-      resolve();
+      let output = `Number of students: ${total}\n`;
+      console.log(`Number of students: ${total}`);
+
+      for (const [field, list] of Object.entries(students)) {
+        const line = `Number of students in ${field}: ${list.length}. List: ${list.join(', ')}`;
+        console.log(line);
+        output += `${line}\n`;
+      }
+
+      resolve(output.trim()); // string-i qaytar
     });
   });
 }
