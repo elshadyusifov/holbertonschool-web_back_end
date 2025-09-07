@@ -1,38 +1,32 @@
 import fs from 'fs';
 import readline from 'readline';
 
-/**
- * Reads the CSV database asynchronously
- * @param {string} path - Path to the CSV file
- * @returns {Promise<Object>} - Object with field names as keys and arrays of firstnames as values
- */
 export function readDatabase(path) {
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(path)) {
-      return reject(new Error('Cannot load the database'));
+      reject(new Error('Cannot load the database'));
+      return;
     }
 
+    const stream = fs.createReadStream(path);
+    const rl = readline.createInterface({ input: stream });
     const data = {};
-    const rl = readline.createInterface({
-      input: fs.createReadStream(path),
-      crlfDelay: Infinity,
-    });
 
     let isHeader = true;
 
     rl.on('line', (line) => {
-      if (line.trim() === '') return; // skip empty lines
       if (isHeader) {
-        isHeader = false; // skip header line
+        isHeader = false;
         return;
       }
+      if (!line.trim()) return;
 
-      const [firstname, , field] = line.split(',').map((item) => item.trim());
+      const [firstname, , field] = line.split(',').map((x) => x.trim());
       if (!data[field]) data[field] = [];
       data[field].push(firstname);
     });
 
     rl.on('close', () => resolve(data));
-    rl.on('error', (err) => reject(err));
+    rl.on('error', () => reject(new Error('Cannot load the database')));
   });
 }
